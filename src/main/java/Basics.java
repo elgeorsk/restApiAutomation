@@ -1,6 +1,8 @@
+import files.MyMethods;
 import files.Payload;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -25,7 +27,7 @@ public class Basics {
         System.out.println(responseAddPlace);
 
         // to parse json
-        JsonPath json = new JsonPath(responseAddPlace);
+        JsonPath json = MyMethods.convertRawToJson(responseAddPlace);
 
         String placeId = json.getString("place_id");
         System.out.println(placeId);
@@ -47,9 +49,12 @@ public class Basics {
                 .header("Content-Type", "application/json")
                 .when().get("maps/api/place/get/json")
                 .then().assertThat().statusCode(200)
-                .body("address", equalTo("70 winter walk, USA"))
                 .extract().response().asString();
 
         System.out.println(responseGetPlace);
+
+        //assert using Assert method TestNG
+        JsonPath responseGetPlaceJsn = MyMethods.convertRawToJson(responseGetPlace);
+        Assert.assertEquals(responseGetPlaceJsn.getString("address"), "70 winter walk, USA");
     }
 }
