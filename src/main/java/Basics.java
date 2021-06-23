@@ -53,7 +53,7 @@ public class Basics {
 
         System.out.println(responseGetPlace);
 
-        //assert using Assert method TestNG
+        //assertEquals TestNG
         JsonPath responseGetPlaceJsn = MyMethods.convertRawToJson(responseGetPlace);
         Assert.assertEquals(responseGetPlaceJsn.getString("address"), "70 winter walk, USA");
     }
